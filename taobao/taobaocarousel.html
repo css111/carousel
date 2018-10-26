@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../../js/jquery-3.3.1.js"></script>
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+    .banner{
+        margin:0 auto;
+        position:relative;
+        width:500px;
+        height:300px;
+        overflow:hidden;
+    }
+    .pic{
+        width:2000px;
+        height:300px;
+        position:absolute;
+    }
+    li{
+        list-style:none;
+    }
+    .pic .img .imgBox img{
+        width:500px;
+        height:300px;
+        float:left;
+    }
+    .num{
+        width:150px;
+        position:absolute;
+        top:250px;
+      left:175px;
+    }
+    .lamp{
+        width:30px;
+        height:30px;
+        border:1px solid purple;
+        border-radius:50%;
+        float:left;
+        margin-left:10px;
+    }
+    .active{
+        background:red;
+    }
+    .btn{
+        display:none;
+        position:absolute;
+        width:40px;
+        height:60px;
+        text-align:center;
+        background-color:rgba(0,0,0,0.3);
+        color:#fff;
+        line-height:60px;
+        font-size:30px;
+    }
+    .btn:hover{
+        background-color:rgba(0,0,0,.6);
+    }
+
+    .btn-l{
+        top:120px;
+        left:0;
+    }
+    .btn-r{
+        top:120px;
+        right:0;
+    }
+</style>
+<body>
+<div class="wrap">
+    <div class="banner">
+        <div class="pic">
+            <ul class="img">
+                <li class="imgBox"><img src="../../picture/111.jpg" alt=""></li>
+                <li class="imgBox"><img src="../../picture/222.jpg" alt=""></li>
+                <li class="imgBox"><img src="../../picture/333.jpg" alt=""></li>
+            </ul>
+        </div>
+        <div class="cir">
+            <ul class="num">
+            </ul>
+        </div>
+        <div class="con">
+            <div class="btn btn-l"> < </div>
+            <div class="btn btn-r"> > </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var size=$('.imgBox').length;
+        for(var i=0;i<size;i++){
+            $('.num').prepend('<li class=lamp></li>');
+        }
+        var j=0;
+        var clone=$('.imgBox').eq(0).clone();
+        $('.img').append(clone);
+        $('.lamp').eq(j).addClass('active');
+        var time;
+        auto();
+        function auto(){
+            time=setInterval(function(){
+                j++;
+               run()
+            },2000);
+        }
+        function run(){
+            $('.pic').stop().animate({left:-500*j},600,function(){
+                if(j===size){
+                    $('.pic').css({left:0});
+                    j=0;
+                }
+                $('.lamp').eq(j).addClass('active').siblings().removeClass('active');
+            })
+        }
+
+    $('.banner').hover(function(){
+        clearInterval(time);
+        $('.btn').css({display:'block'})
+    },function(){
+        auto();
+        $('.btn').css({display:'none'})
+    })
+    $('.lamp').mouseenter(function(){
+    j=$(this).index('.lamp');
+    run();
+});
+    $('.btn-l').click(function(){
+    j--;
+    if(j<0){
+        $('.pic').css({
+            left:'-1500px'
+        });
+        j=2;
+    }
+    run();
+});
+        $('.btn-r').click(function(){
+            j++;
+           run();
+        })
+    })
+</script>
+</body>
+
+</html>
